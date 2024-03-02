@@ -1,0 +1,39 @@
+[gd_scene load_steps=9 format=3 uid="uid://cgbohj3umtq5e"]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_yt7vh"]
+[ext_resource type="Texture2D" uid="uid://cjb2sj6cc1hyd" path="res://icon.svg" id="2_1j5x1"]
+[ext_resource type="Script" path="res://States/SelectState.gd" id="3_4drmx"]
+[ext_resource type="Script" path="res://player/states/player_wiggle.gd" id="4_8og6l"]
+[ext_resource type="Script" path="res://States/AutoTransitionState.gd" id="4_xv0at"]
+[ext_resource type="Script" path="res://States/ConcurrentState.gd" id="5_achjf"]
+[ext_resource type="Script" path="res://player/states/player_dive_state.gd" id="7_w07gd"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_154xs"]
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_yt7vh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_154xs")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_1j5x1")
+
+[node name="SelectState" type="Node" parent="."]
+script = ExtResource("3_4drmx")
+
+[node name="DefaultState" type="Node" parent="SelectState" node_paths=PackedStringArray("auto_transition_context")]
+script = ExtResource("4_xv0at")
+auto_transition_context = NodePath("../..")
+auto_transition_expression = "diving == false"
+
+[node name="Diving" type="Node" parent="SelectState" node_paths=PackedStringArray("auto_transition_context")]
+script = ExtResource("5_achjf")
+auto_transition_context = NodePath("../..")
+auto_transition_expression = "diving == true"
+
+[node name="WiggleState" type="Node" parent="SelectState/Diving"]
+script = ExtResource("4_8og6l")
+
+[node name="DiveState" type="Node" parent="SelectState/Diving"]
+script = ExtResource("7_w07gd")

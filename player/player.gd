@@ -10,9 +10,14 @@ var starting_move_speed:Vector2 = move_speed
 @onready var start_position:Vector2 = position
 @onready var actual_target:Vector2 = start_position
 
+
 var diving:bool = false
 var latched:bool = true
 var hit_target:bool = false
+var t:float = 0
+
+signal dove()
+signal latch()
 
 func _physics_process(delta):
 	handle_drift(delta)
@@ -28,14 +33,10 @@ func handle_dive(delta):
 	
 	if Input.is_action_just_released("dive") and !diving:
 		diving = true
-		latched = false
-		actual_target = target.position
-		target.stick = true
+		
 		
 	elif Input.is_action_just_released("dive") and diving:
 		diving = false
-		target.stick = false
-		actual_target = start_position
 		
 	if !diving and distance < 10 and velocity.y < 10:
 		position.y = start_position.y
@@ -43,6 +44,8 @@ func handle_dive(delta):
 		if !latched:
 			move_speed.y = starting_move_speed.y
 			latched = true
+			
+			latch.emit()
 			
 	if move_speed.y > max_move_speed.y:
 		move_speed.y = max_move_speed.y
@@ -52,12 +55,12 @@ func handle_dive(delta):
 	
 
 func handle_drift(delta):
-	if !latched and abs(velocity.x) < starting_move_speed.x *2:
-		velocity.x = 0
-		move_speed.x = starting_move_speed.x
-	elif !latched:
-		return
+	
+	#if !latched and abs(velocity.x) < starting_move_speed.x *2:
+	#	velocity.x = 0
+	#	move_speed.x = starting_move_speed.x
 	var shift = Input.get_axis("left","right")
-	move_speed.x += move_speed_increase.x	
+	if shift != 0:
+		move_speed.x += move_speed_increase.x
 	velocity.x += shift * move_speed.x * delta
 	velocity.x *= velocity_friction.x

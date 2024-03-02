@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ch6ubv1led4di"]
 
-[ext_resource type="Script" path="res://Marker2D.gd" id="1_cyqt8"]
+[ext_resource type="Script" path="res://dive_target.gd" id="1_cyqt8"]
 [ext_resource type="Texture2D" uid="uid://cjb2sj6cc1hyd" path="res://icon.svg" id="2_nvadu"]
 
 [node name="DiveTarget" type="Marker2D"]

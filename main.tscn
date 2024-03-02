@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://b86rmo081qxql"]
 
-[ext_resource type="PackedScene" uid="uid://cgbohj3umtq5e" path="res://player.tscn" id="1_fp8bi"]
+[ext_resource type="PackedScene" uid="uid://cgbohj3umtq5e" path="res://player/player.tscn" id="1_fp8bi"]
 [ext_resource type="PackedScene" uid="uid://ch6ubv1led4di" path="res://dive_target.tscn" id="2_h5gnl"]
 [ext_resource type="Script" path="res://dive_speed_bar.gd" id="2_qnd7s"]
 
@@ -32,7 +32,7 @@ shape = SubResource("WorldBoundaryShape2D_aqnpd")
 
 [node name="Player" parent="." node_paths=PackedStringArray("target") instance=ExtResource("1_fp8bi")]
 position = Vector2(128, 64)
-target = NodePath("")
+target = NodePath("../DiveTarget")
 
 [node name="DiveTarget" parent="." instance=ExtResource("2_h5gnl")]
 

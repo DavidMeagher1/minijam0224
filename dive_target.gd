@@ -4,12 +4,20 @@ extends Marker2D
 var t:float = 0
 var stick:bool = false
 @onready var player = $"../Player"
+@onready var sprite_2d:Sprite2D = $Sprite2D
 @onready var start_position = position
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	player.dove.connect(_on_player_dove)
+	player.latch.connect(_on_player_latch)
 
+func _on_player_dove():
+	stick = true
+	sprite_2d.modulate = Color(1.0,0.0,0.0)
+
+func _on_player_latch():
+	stick = false
+	sprite_2d.modulate = Color(1.0,1.0,1.0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
