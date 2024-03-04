@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://b86rmo081qxql"]
+[gd_scene load_steps=10 format=3 uid="uid://b86rmo081qxql"]
 
 [ext_resource type="PackedScene" uid="uid://cgbohj3umtq5e" path="res://player/player.tscn" id="1_fp8bi"]
 [ext_resource type="PackedScene" uid="uid://ch6ubv1led4di" path="res://dive_target.tscn" id="2_h5gnl"]
 [ext_resource type="Script" path="res://dive_speed_bar.gd" id="2_qnd7s"]
+[ext_resource type="PackedScene" uid="uid://bgi5glg4x21f1" path="res://coord.tscn" id="4_84air"]
+[ext_resource type="Texture2D" uid="uid://cjb2sj6cc1hyd" path="res://icon.svg" id="5_8h2mi"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_8wfol"]
 
@@ -10,39 +12,42 @@
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_aqnpd"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_milo6"]
-size = Vector2(274, 82)
+[sub_resource type="Curve" id="Curve_dvy7t"]
+_data = [Vector2(0, 0.49823), 0.0, 0.0, 0, 0, Vector2(0.172414, 1), 0.0, 0.0, 0, 0, Vector2(0.496169, 0.502833), 0.0, 0.0, 0, 0, Vector2(0.752874, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.493626), 0.0, 0.0, 0, 0]
+point_count = 5
 
 [node name="Main" type="Node2D"]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="world_boundries" type="StaticBody2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="world_boundries"]
 rotation = 1.5708
 shape = SubResource("WorldBoundaryShape2D_8wfol")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="world_boundries"]
 position = Vector2(1152, 0)
 rotation = -1.5708
 shape = SubResource("WorldBoundaryShape2D_6gga3")
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="world_boundries"]
 position = Vector2(0, 648)
 shape = SubResource("WorldBoundaryShape2D_aqnpd")
+
+[node name="coord" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_84air")]
+z_index = -2
+width = 5.0
+width_curve = SubResource("Curve_dvy7t")
+texture = ExtResource("5_8h2mi")
+texture_mode = 2
+joint_mode = 2
+target = NodePath("../Player")
 
 [node name="Player" parent="." node_paths=PackedStringArray("target") instance=ExtResource("1_fp8bi")]
 position = Vector2(128, 64)
 target = NodePath("../DiveTarget")
+max_move_speed = Vector2(80, 400)
 
 [node name="DiveTarget" parent="." instance=ExtResource("2_h5gnl")]
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="."]
-visible = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-position = Vector2(160, 240)
-shape = SubResource("RectangleShape2D_milo6")
-disabled = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
